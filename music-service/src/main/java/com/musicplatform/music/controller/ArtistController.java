@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.musicplatform.music.dto.ArtistRequest;
 import com.musicplatform.music.dto.ArtistResponse;
 import com.musicplatform.music.entity.Artist;
 import com.musicplatform.music.mapper.ArtistMapper;
@@ -30,8 +31,10 @@ public class ArtistController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Artist create(@RequestBody Artist artist) {
-		return artistService.create(artist);
+	public ArtistResponse create(@RequestBody ArtistRequest request) {
+	    Artist created = artistService.create(request);
+	    return ArtistMapper.toResponse(created);
+
 	}
 
 	@GetMapping("/{id}")
