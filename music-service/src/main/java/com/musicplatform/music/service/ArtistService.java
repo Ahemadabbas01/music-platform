@@ -15,7 +15,7 @@ public interface ArtistService {
 
 	List<Artist> getAll();
 
-	Artist update(Long id, Artist artist);
+	Artist update(Long id, ArtistRequest request);
 
 	void delete(Long id);
 }

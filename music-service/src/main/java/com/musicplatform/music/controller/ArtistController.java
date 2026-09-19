@@ -51,8 +51,9 @@ public class ArtistController {
 	}
 
 	@PutMapping("/{id}")
-	public Artist update(@PathVariable Long id, @RequestBody Artist artist) {
-		return artistService.update(id, artist);
+	public ArtistResponse update(@PathVariable Long id, @Valid @RequestBody ArtistRequest request) {
+		 Artist updated = artistService.update(id, request);
+		 return ArtistMapper.toResponse(updated);
 	}
 
 	@DeleteMapping("/{id}")
