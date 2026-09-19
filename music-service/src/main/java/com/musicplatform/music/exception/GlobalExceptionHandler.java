@@ -19,9 +19,13 @@ import org.springframework.validation.FieldError;
 public class GlobalExceptionHandler {
 
 	@ExceptionHandler(ResourceNotFoundException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public String handleResourceNotFound(ResourceNotFoundException ex) {
-		return ex.getMessage();
+	public ResponseEntity<ErrorResponse> handleResourceNotFound(ResourceNotFoundException ex,
+			HttpServletRequest request) {
+
+		ErrorResponse body = new ErrorResponse(Instant.now(), HttpStatus.NOT_FOUND.value(), "RESOURCE_NOT_FOUND",
+				ex.getMessage(), request.getRequestURI(), null);
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
