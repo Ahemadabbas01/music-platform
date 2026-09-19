@@ -19,6 +19,8 @@ import com.musicplatform.music.entity.Artist;
 import com.musicplatform.music.mapper.ArtistMapper;
 import com.musicplatform.music.service.ArtistService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/artists")
 public class ArtistController {
@@ -31,7 +33,7 @@ public class ArtistController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ArtistResponse create(@RequestBody ArtistRequest request) {
+	public ArtistResponse create(@Valid @RequestBody ArtistRequest request) {
 	    Artist created = artistService.create(request);
 	    return ArtistMapper.toResponse(created);
 
