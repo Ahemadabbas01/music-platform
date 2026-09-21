@@ -17,7 +17,7 @@ error response shape :
   "status": 404,
   "error": "RESOURCE_NOT_FOUND",
   "message": "Artist not found: 1",
-  "path": "/api/artist/1",
+  "path": "/api/artists/1",
   "fieldErrors": null
 }
 
