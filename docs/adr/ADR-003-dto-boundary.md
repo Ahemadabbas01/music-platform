@@ -37,7 +37,12 @@ Every API resource has:
 - A **Mapper** — a utility class with a static method that converts an
   entity to its response DTO.
 
-Implemented for: Artist, Album. Pending: Song.
+**PUT semantics:** PUT on a resource replaces its writable fields, but
+relationship collections are managed via dedicated endpoints (e.g.
+`POST /api/songs/{id}/artists/{artistId}`). PUT does not add or remove
+relationships. This is documented in the API contract.
+
+Implemented for: Artist, Album, Song.
 
 ## Consequences
 + Stable API contract independent of DB schema
