@@ -2,17 +2,20 @@ package com.musicplatform.music.service;
 
 import java.util.List;
 
+import com.musicplatform.music.dto.ArtistRequest;
 import com.musicplatform.music.entity.Artist;
 
 public interface ArtistService {
 
-    Artist create(Artist artist);
+	// Artist create(Artist artist);
 
-    Artist getById(Long id);
+	Artist create(ArtistRequest request);
 
-    List<Artist> getAll();
+	Artist getById(Long id);
 
-    Artist update(Long id, Artist artist);
+	List<Artist> getAll();
 
-    void delete(Long id);
+	Artist update(Long id, ArtistRequest request);
+
+	void delete(Long id);
 }

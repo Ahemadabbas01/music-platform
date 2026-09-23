@@ -1,5 +1,6 @@
 package com.musicplatform.music.service.impl;
 
+import com.musicplatform.music.dto.ArtistRequest;
 import com.musicplatform.music.entity.Artist;
 import com.musicplatform.music.exception.ResourceNotFoundException;
 import com.musicplatform.music.repository.ArtistRepository;
@@ -18,8 +19,12 @@ public class ArtistServiceImpl implements ArtistService {
 	}
 
 	@Override
-	public Artist create(Artist artist) {
-		return artistRepository.save(artist);
+	public Artist create(ArtistRequest request) {
+	    Artist artist = new Artist();
+	    artist.setName(request.name());
+	    artist.setDetails(request.details());
+	    artist.setCountry(request.country());
+	    return artistRepository.save(artist);
 	}
 
 	@Override
@@ -33,14 +38,13 @@ public class ArtistServiceImpl implements ArtistService {
 	}
 
 	@Override
-	public Artist update(Long id, Artist artist) {
-		Artist artistData = getById(id);
-
-		artistData.setName(artist.getName());
-		artistData.setDetails(artist.getDetails());
-		artistData.setCountry(artist.getCountry());
-
-		return artistRepository.save(artistData);
+	public Artist update(Long id, ArtistRequest request) {
+	    Artist existing = artistRepository.findById(id)
+	        .orElseThrow(() -> new ResourceNotFoundException("Artist not found: " + id));
+	    existing.setName(request.name());
+	    existing.setDetails(request.details());
+	    existing.setCountry(request.country());
+	    return artistRepository.save(existing);
 	}
 
 	@Override
