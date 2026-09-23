@@ -1,5 +1,6 @@
 package com.musicplatform.music.service.impl;
 
+import com.musicplatform.music.repository.AlbumRepository;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -8,22 +9,38 @@ import com.musicplatform.music.entity.Song;
 import com.musicplatform.music.exception.ResourceNotFoundException;
 import com.musicplatform.music.repository.SongRepository;
 import com.musicplatform.music.service.SongService;
+import com.musicplatform.music.dto.SongRequest;
+import com.musicplatform.music.entity.Album;
 import com.musicplatform.music.entity.Artist;
 import com.musicplatform.music.repository.ArtistRepository;
 
 @Service
 public class SongServiceImpl implements SongService {
 
+	private final AlbumRepository albumRepository;
 	private final SongRepository songRepository;
 	private final ArtistRepository artistRepository;
 
-	public SongServiceImpl(SongRepository songRepository, ArtistRepository artistRepository) {
+	public SongServiceImpl(SongRepository songRepository, ArtistRepository artistRepository, AlbumRepository albumRepository) {
 		this.songRepository = songRepository;
 		this.artistRepository = artistRepository;
+		this.albumRepository = albumRepository;
 	}
 
 	@Override
-	public Song create(Song song) {
+	public Song create(SongRequest request) {
+		Song song = new Song();
+	    song.setTitle(request.title());
+	    song.setAudioRef(request.audioRef());
+	    
+	    if (request.albumId() != null) {
+	    	 Album album = albumRepository.findById(request.albumId())
+	    	            .orElseThrow(() -> new ResourceNotFoundException(
+	    	                "Album not found: " + request.albumId()));
+	         song.setAlbum(album);
+
+	    }
+	    
 		return songRepository.save(song);
 	}
 
@@ -38,14 +55,22 @@ public class SongServiceImpl implements SongService {
 	}
 
 	@Override
-	public Song update(Long id, Song song) {
-		Song songData = getById(id);
+	public Song update(Long id, SongRequest request) {
+		  Song existing = songRepository.findById(id)
+			        .orElseThrow(() -> new ResourceNotFoundException("Song not found: " + id));
 
-		songData.setTitle(song.getTitle());
-		songData.setAudioRef(song.getAudioRef());
-		songData.setAlbum(song.getAlbum());
+		  existing.setTitle(request.title());
+		  existing.setAudioRef(request.audioRef());
+		  if (request.albumId() == null) {
+		        existing.setAlbum(null);
+		  }else {
+			  Album album = albumRepository.findById(request.albumId())
+			            .orElseThrow(() -> new ResourceNotFoundException(
+			                "Album not found: " + request.albumId()));
+			        existing.setAlbum(album);
+		  }
 
-		return songRepository.save(songData);
+		return songRepository.save(existing);
 	}
 
 	@Override
