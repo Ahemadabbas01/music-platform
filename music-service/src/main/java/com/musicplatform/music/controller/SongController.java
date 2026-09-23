@@ -1,7 +1,13 @@
 package com.musicplatform.music.controller;
 
+import com.musicplatform.music.dto.SongRequest;
+import com.musicplatform.music.dto.SongResponse;
 import com.musicplatform.music.entity.Song;
+import com.musicplatform.music.mapper.SongMapper;
 import com.musicplatform.music.service.SongService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,23 +25,26 @@ public class SongController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Song create(@RequestBody Song song) {
-		return songService.create(song);
+	public SongResponse create(@Valid @RequestBody SongRequest request) {
+		 Song created = songService.create(request);
+		 return SongMapper.toResponse(created);
 	}
 
 	@GetMapping("/{id}")
-	public Song getById(@PathVariable Long id) {
-		return songService.getById(id);
+	public SongResponse getById(@PathVariable Long id) {
+		 Song song = songService.getById(id);
+		 return SongMapper.toResponse(song);
 	}
 
 	@GetMapping
-	public List<Song> getAll() {
-		return songService.getAll();
+	public List<SongResponse> getAll() {
+		return songService.getAll().stream().map(SongMapper::toResponse).toList();
 	}
 
 	@PutMapping("/{id}")
-	public Song update(@PathVariable Long id, @RequestBody Song song) {
-		return songService.update(id, song);
+	public SongResponse update(@PathVariable Long id,@Valid @RequestBody SongRequest request) {
+		 Song updated = songService.update(id, request);
+		 return SongMapper.toResponse(updated);
 	}
 
 	@DeleteMapping("/{id}")
