@@ -2,6 +2,7 @@ package com.musicplatform.music.controller;
 
 import com.musicplatform.music.dto.AlbumRequest;
 import com.musicplatform.music.dto.AlbumResponse;
+import com.musicplatform.music.dto.PageResponse;
 import com.musicplatform.music.entity.Album;
 import com.musicplatform.music.mapper.AlbumMapper;
 import com.musicplatform.music.mapper.ArtistMapper;
@@ -9,6 +10,8 @@ import com.musicplatform.music.service.AlbumService;
 
 import jakarta.validation.Valid;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,10 +40,15 @@ public class AlbumController {
          return AlbumMapper.toResponse(album);
     }
 
-    @GetMapping
-    public List<AlbumResponse> getAll() {
-        return albumService.getAll().stream().map(AlbumMapper::toResponse).toList();
-    }
+	@GetMapping
+	public PageResponse<AlbumResponse> getAll(Pageable pageable) {
+
+		Page<Album> page = albumService.getAll(pageable);
+
+		List<AlbumResponse> content = page.getContent().stream().map(AlbumMapper::toResponse).toList();
+		return new PageResponse<>(content, page.getNumber(), page.getSize(), page.getTotalElements(),
+				page.getTotalPages(), page.isFirst(), page.isLast());
+	}
 
 	@PutMapping("/{id}")
 	public AlbumResponse update(@PathVariable Long id, @Valid @RequestBody AlbumRequest request) {

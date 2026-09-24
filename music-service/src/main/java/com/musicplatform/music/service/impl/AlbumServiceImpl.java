@@ -2,6 +2,8 @@ package com.musicplatform.music.service.impl;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.musicplatform.music.dto.AlbumRequest;
@@ -42,8 +44,8 @@ public class AlbumServiceImpl implements AlbumService {
 	}
 
 	@Override
-	public List<Album> getAll() {
-		return albumRepository.findAll();
+	public Page<Album> getAll(Pageable pageable) {
+		return albumRepository.findAll(pageable);
 	}
 
 	@Override
