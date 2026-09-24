@@ -2,6 +2,8 @@ package com.musicplatform.music.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.musicplatform.music.dto.ArtistRequest;
 import com.musicplatform.music.dto.ArtistResponse;
+import com.musicplatform.music.dto.PageResponse;
 import com.musicplatform.music.entity.Artist;
 import com.musicplatform.music.mapper.ArtistMapper;
 import com.musicplatform.music.service.ArtistService;
@@ -46,9 +49,24 @@ public class ArtistController {
 	}
 
 	@GetMapping
-	public List<ArtistResponse> getAll() {
-		return artistService.getAll().stream().map(ArtistMapper::toResponse).toList();
-	}
+	public PageResponse<ArtistResponse> getAll(Pageable pageable) {
+		
+	    Page<Artist> page = artistService.getAll(pageable);
+	    
+	    List<ArtistResponse> content = page.getContent().stream()
+	            .map(ArtistMapper::toResponse)
+	            .toList();
+	    return new PageResponse<>(
+	            content,
+	            page.getNumber(),
+	            page.getSize(),
+	            page.getTotalElements(),
+	            page.getTotalPages(),
+	            page.isFirst(),
+	            page.isLast()
+	    );	
+	    }
+	
 
 	@PutMapping("/{id}")
 	public ArtistResponse update(@PathVariable Long id, @Valid @RequestBody ArtistRequest request) {

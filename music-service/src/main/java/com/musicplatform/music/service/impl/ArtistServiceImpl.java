@@ -7,6 +7,8 @@ import com.musicplatform.music.repository.ArtistRepository;
 import com.musicplatform.music.service.ArtistService;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -33,8 +35,8 @@ public class ArtistServiceImpl implements ArtistService {
 	}
 
 	@Override
-	public List<Artist> getAll() {
-		return artistRepository.findAll();
+	public Page<Artist> getAll(Pageable pageable) {
+		return artistRepository.findAll(pageable);
 	}
 
 	@Override

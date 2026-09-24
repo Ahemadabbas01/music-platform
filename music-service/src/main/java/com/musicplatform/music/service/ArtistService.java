@@ -2,6 +2,9 @@ package com.musicplatform.music.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.musicplatform.music.dto.ArtistRequest;
 import com.musicplatform.music.entity.Artist;
 
@@ -13,7 +16,7 @@ public interface ArtistService {
 
 	Artist getById(Long id);
 
-	List<Artist> getAll();
+	Page<Artist> getAll(Pageable pageable);
 
 	Artist update(Long id, ArtistRequest request);
 
