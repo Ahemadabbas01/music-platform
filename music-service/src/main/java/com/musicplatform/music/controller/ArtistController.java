@@ -50,22 +50,13 @@ public class ArtistController {
 
 	@GetMapping
 	public PageResponse<ArtistResponse> getAll(Pageable pageable) {
-		
-	    Page<Artist> page = artistService.getAll(pageable);
-	    
-	    List<ArtistResponse> content = page.getContent().stream()
-	            .map(ArtistMapper::toResponse)
-	            .toList();
-	    return new PageResponse<>(
-	            content,
-	            page.getNumber(),
-	            page.getSize(),
-	            page.getTotalElements(),
-	            page.getTotalPages(),
-	            page.isFirst(),
-	            page.isLast()
-	    );	
-	    }
+
+		Page<Artist> page = artistService.getAll(pageable);
+
+		List<ArtistResponse> content = page.getContent().stream().map(ArtistMapper::toResponse).toList();
+		return new PageResponse<>(content, page.getNumber(), page.getSize(), page.getTotalElements(),
+				page.getTotalPages(), page.isFirst(), page.isLast());
+	}
 	
 
 	@PutMapping("/{id}")
