@@ -8,10 +8,13 @@ import com.musicplatform.music.service.SongService;
 
 import jakarta.validation.Valid;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import com.musicplatform.music.dto.PageResponse;
 
 @RestController
 @RequestMapping("/api/songs")
@@ -37,8 +40,13 @@ public class SongController {
 	}
 
 	@GetMapping
-	public List<SongResponse> getAll() {
-		return songService.getAll().stream().map(SongMapper::toResponse).toList();
+	public PageResponse<SongResponse> getAll(Pageable pageable) {
+		Page<Song> page = songService.getAll(pageable);
+
+		List<SongResponse> content = page.getContent().stream().map(SongMapper::toResponse).toList();
+
+		return new PageResponse<>(content, page.getNumber(), page.getSize(), page.getTotalElements(),
+				page.getTotalPages(), page.isFirst(), page.isLast());
 	}
 
 	@PutMapping("/{id}")

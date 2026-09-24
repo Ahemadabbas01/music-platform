@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.musicplatform.music.dto.SongRequest;
 import com.musicplatform.music.entity.Song;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface SongService {
 
@@ -11,7 +13,7 @@ public interface SongService {
 
 	Song getById(Long id);
 
-	List<Song> getAll();
+	Page<Song> getAll(Pageable pageable);
 
 	Song update(Long id, SongRequest request);
 

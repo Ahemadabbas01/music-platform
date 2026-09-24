@@ -3,6 +3,8 @@ package com.musicplatform.music.service.impl;
 import com.musicplatform.music.repository.AlbumRepository;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.musicplatform.music.entity.Song;
@@ -50,8 +52,8 @@ public class SongServiceImpl implements SongService {
 	}
 
 	@Override
-	public List<Song> getAll() {
-		return songRepository.findAll();
+	public Page<Song> getAll(Pageable pageable) {
+		return songRepository.findAll(pageable);
 	}
 
 	@Override
