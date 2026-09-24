@@ -14,7 +14,7 @@ public interface AlbumService {
 
 	Album getById(Long id);
 
-	Page<Album> getAll(Pageable Pageable);
+	Page<Album> getAll(Pageable pageable);
 
 	Album update(Long id, AlbumRequest request);
 
