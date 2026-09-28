@@ -52,8 +52,11 @@ public class SongServiceImpl implements SongService {
 	}
 
 	@Override
-	public Page<Song> getAll(Pageable pageable) {
-		return songRepository.findAll(pageable);
+	public Page<Song> search(String q,Pageable pageable) {
+		if(q == null || q.isBlank()) {
+			return songRepository.findAll(pageable);
+		}
+	    return songRepository.findByTitleStartingWithIgnoreCase(q.trim(), pageable);
 	}
 
 	@Override

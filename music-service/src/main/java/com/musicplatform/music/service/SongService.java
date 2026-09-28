@@ -13,7 +13,7 @@ public interface SongService {
 
 	Song getById(Long id);
 
-	Page<Song> getAll(Pageable pageable);
+	Page<Song> search(String q,Pageable pageable);
 
 	Song update(Long id, SongRequest request);
 

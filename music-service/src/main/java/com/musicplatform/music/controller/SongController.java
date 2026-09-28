@@ -8,6 +8,7 @@ import com.musicplatform.music.mapper.SongMapper;
 import com.musicplatform.music.service.SongService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -60,13 +61,17 @@ public class SongController {
 		 return SongMapper.toResponse(song);
 	}
 
-	@Operation(summary = "List songs (paginated)")
+	@Operation(summary = "List songs (paginated, optional title search)",
+			   description = "Returns a page of songs. If 'q' is provided, "
+		                + "filters songs whose title starts with the given prefix (case-insensitive)."
+		)
 	@ApiResponses({
 	    @ApiResponse(responseCode = "200", description = "Page of songs returned")
 	})
 	@GetMapping
-	public PageResponse<SongResponse> getAll(Pageable pageable) {
-		Page<Song> page = songService.getAll(pageable);
+	public PageResponse<SongResponse> getAll(@Parameter(description = "Optional prefix to filter song titles")@RequestParam(required = false) String q, Pageable pageable) {
+		
+		Page<Song> page = songService.search(q,pageable);
 
 		List<SongResponse> content = page.getContent().stream().map(SongMapper::toResponse).toList();
 
