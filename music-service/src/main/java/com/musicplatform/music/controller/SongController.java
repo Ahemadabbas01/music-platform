@@ -61,15 +61,16 @@ public class SongController {
 		 return SongMapper.toResponse(song);
 	}
 
-	@Operation(summary = "List songs (paginated, optional title search)",
-			   description = "Returns a page of songs. If 'q' is provided, "
-		                + "filters songs whose title starts with the given prefix (case-insensitive)."
+	@Operation(
+		    summary = "List songs (paginated, optional search)",
+		    description = "Returns a page of songs. If 'q' is provided, filters songs whose "
+		                + "title, artist name, or album name contains the query (case-insensitive)."
 		)
 	@ApiResponses({
 	    @ApiResponse(responseCode = "200", description = "Page of songs returned")
 	})
 	@GetMapping
-	public PageResponse<SongResponse> getAll(@Parameter(description = "Optional prefix to filter song titles")@RequestParam(required = false) String q, Pageable pageable) {
+	public PageResponse<SongResponse> getAll(@Parameter(description = "Optional search query; matches title, artist name, or album name (case-insensitive)")@RequestParam(required = false) String q, Pageable pageable) {
 		
 		Page<Song> page = songService.search(q,pageable);
 

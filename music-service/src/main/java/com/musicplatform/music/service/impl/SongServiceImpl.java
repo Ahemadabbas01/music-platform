@@ -56,7 +56,7 @@ public class SongServiceImpl implements SongService {
 		if(q == null || q.isBlank()) {
 			return songRepository.findAll(pageable);
 		}
-	    return songRepository.findByTitleStartingWithIgnoreCase(q.trim(), pageable);
+	    return songRepository.searchByTitleOrArtistOrAlbum(q.trim(), pageable);
 	}
 
 	@Override
