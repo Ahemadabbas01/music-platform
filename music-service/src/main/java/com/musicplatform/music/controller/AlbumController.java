@@ -10,6 +10,7 @@ import com.musicplatform.music.mapper.ArtistMapper;
 import com.musicplatform.music.service.AlbumService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -62,14 +63,16 @@ public class AlbumController {
          return AlbumMapper.toResponse(album);
     }
 
-	@Operation(summary = "List albums (paginated)")
+	@Operation(summary = "List albums (paginated), optional album name search",
+		    description = "Returns a page of album. If 'q' is provided, "
+	                + "filters albums whose name starts with the given prefix (case-insensitive).")
 	@ApiResponses({
 	    @ApiResponse(responseCode = "200", description = "Page of album returned")
 	})
 	@GetMapping
-	public PageResponse<AlbumResponse> getAll(Pageable pageable) {
+	public PageResponse<AlbumResponse> getAll(@Parameter(description = "Optional prefix to filter album names")@RequestParam(required = false) String q,Pageable pageable) {
 
-		Page<Album> page = albumService.getAll(pageable);
+		Page<Album> page = albumService.search(q,pageable);
 
 		List<AlbumResponse> content = page.getContent().stream().map(AlbumMapper::toResponse).toList();
 		return new PageResponse<>(content, page.getNumber(), page.getSize(), page.getTotalElements(),

@@ -16,7 +16,7 @@ public interface ArtistService {
 
 	Artist getById(Long id);
 
-	Page<Artist> getAll(Pageable pageable);
+	Page<Artist> search(String q,Pageable pageable);
 
 	Artist update(Long id, ArtistRequest request);
 

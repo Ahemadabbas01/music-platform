@@ -35,8 +35,11 @@ public class ArtistServiceImpl implements ArtistService {
 	}
 
 	@Override
-	public Page<Artist> getAll(Pageable pageable) {
-		return artistRepository.findAll(pageable);
+	public Page<Artist> search(String q,Pageable pageable) {
+		if(q == null || q.isBlank()) {
+			return artistRepository.findAll(pageable);
+		}
+		return artistRepository.findByNameStartingWithIgnoreCase(q.trim(),pageable);
 	}
 
 	@Override

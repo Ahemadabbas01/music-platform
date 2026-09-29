@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,6 +24,7 @@ import com.musicplatform.music.mapper.ArtistMapper;
 import com.musicplatform.music.service.ArtistService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -70,20 +72,21 @@ public class ArtistController {
 		return ArtistMapper.toResponse(artistData);
 	}
 
-	@Operation(summary = "List artists (paginated)")
+	@Operation(summary = "List artists (paginated, optional artist name search)",
+		    description = "Returns a page of artist. If 'q' is provided, "
+	                + "filters artist whose name starts with the given prefix (case-insensitive).")
 	@ApiResponses({
 	    @ApiResponse(responseCode = "200", description = "Page of artists returned")
 	})
 	@GetMapping
-	public PageResponse<ArtistResponse> getAll(Pageable pageable) {
+	public PageResponse<ArtistResponse> getAll(@Parameter(description = "Optional prefix to filter artist names")@RequestParam(required = false)String q,Pageable pageable) {
 
-		Page<Artist> page = artistService.getAll(pageable);
+		Page<Artist> page = artistService.search(q,pageable);
 
 		List<ArtistResponse> content = page.getContent().stream().map(ArtistMapper::toResponse).toList();
 		return new PageResponse<>(content, page.getNumber(), page.getSize(), page.getTotalElements(),
 				page.getTotalPages(), page.isFirst(), page.isLast());
 	}
-	
 
 	@Operation(summary = "Update an existing artist", description = "Updates an existing artist. Returns the updated artist or 404 if not found.")
 	@ApiResponses({

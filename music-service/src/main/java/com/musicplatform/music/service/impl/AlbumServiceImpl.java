@@ -44,8 +44,12 @@ public class AlbumServiceImpl implements AlbumService {
 	}
 
 	@Override
-	public Page<Album> getAll(Pageable pageable) {
-		return albumRepository.findAll(pageable);
+	public Page<Album> search(String q,Pageable pageable) {
+		
+		if(q == null || q.isBlank()) {
+			return albumRepository.findAll(pageable);
+		}
+		return albumRepository.findByNameStartingWithIgnoreCase(q.trim(),pageable);
 	}
 
 	@Override
