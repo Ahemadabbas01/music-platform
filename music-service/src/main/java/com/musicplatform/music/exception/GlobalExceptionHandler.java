@@ -40,5 +40,22 @@ public class GlobalExceptionHandler {
 		ErrorResponse body = new ErrorResponse(Instant.now(), HttpStatus.BAD_REQUEST.value(), "VALIDATION_FAILED", "Request validation failed", request.getRequestURI(), fieldErrors);
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
 	}
+	
+	@ExceptionHandler(DuplicateResourceException.class)
+	public ResponseEntity<ErrorResponse> handleDuplicate(
+	        DuplicateResourceException ex,
+	        HttpServletRequest request) {
+
+	    ErrorResponse body = new ErrorResponse(
+	            Instant.now(),
+	            HttpStatus.CONFLICT.value(),
+	            "RESOURCE_CONFLICT",
+	            ex.getMessage(),
+	            request.getRequestURI(),
+	            null
+	    );
+
+	    return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+	}
 
 }

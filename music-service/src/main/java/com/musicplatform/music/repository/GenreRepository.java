@@ -8,5 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface GenreRepository extends JpaRepository<Genre, Long> {
     Page<Genre> findByNameStartingWithIgnoreCase(String name, Pageable pageable);
+    
+    boolean existsByName(String name);
+    boolean existsByNameAndIdNot(String name, Long id);
 
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.musicplatform.music.dto.GenreRequest;
 import com.musicplatform.music.entity.Genre;
+import com.musicplatform.music.exception.DuplicateResourceException;
 import com.musicplatform.music.exception.ResourceNotFoundException;
 import com.musicplatform.music.repository.GenreRepository;
 import com.musicplatform.music.service.GenreService;
@@ -21,6 +22,10 @@ public class GenreServiceImpl implements GenreService{
 	    
 	@Override
 	public Genre create(GenreRequest request) {
+		 if (genreRepository.existsByName(request.name())) {
+		        throw new DuplicateResourceException(
+		                "Genre already exists: " + request.name());
+		    }
 		Genre genre = new Genre();
         genre.setName(request.name());
         genre.setDescription(request.description());
@@ -45,6 +50,12 @@ public class GenreServiceImpl implements GenreService{
     public Genre update(Long id, GenreRequest request) {
         Genre existing = genreRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Genre not found: " + id));
+        
+        if (genreRepository.existsByNameAndIdNot(request.name(), id)) {
+            throw new DuplicateResourceException(
+                    "Genre already exists: " + request.name());
+        }
+        
         existing.setName(request.name());
         existing.setDescription(request.description());
         return genreRepository.save(existing);
