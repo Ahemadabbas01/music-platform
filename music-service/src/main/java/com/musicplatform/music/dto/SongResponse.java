@@ -8,6 +8,8 @@ public record SongResponse(Long id,
 		String audioRef,
 		Long albumId,
 		String albumName,
+		Long genreId,
+		String genreName,
 		List<ArtistSummary> artists,
 		OffsetDateTime createdAt,
 		OffsetDateTime updatedAt) {

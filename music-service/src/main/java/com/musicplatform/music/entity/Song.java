@@ -22,6 +22,10 @@ public class Song {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "album_id")
     private Album album;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "genre_id")
+    private Genre genre;
 
     @Column(name = "audio_ref", nullable = false, columnDefinition = "TEXT")
     private String audioRef;
@@ -55,6 +59,10 @@ public class Song {
         return album;
     }
 
+    public Genre getGenre() {
+        return genre;
+    }
+    
     public String getAudioRef() {
         return audioRef;
     }
@@ -75,6 +83,10 @@ public class Song {
         this.album = album;
     }
 
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
+    
     public void setAudioRef(String audioRef) {
         this.audioRef = audioRef;
     }

@@ -14,7 +14,9 @@ import com.musicplatform.music.service.SongService;
 import com.musicplatform.music.dto.SongRequest;
 import com.musicplatform.music.entity.Album;
 import com.musicplatform.music.entity.Artist;
+import com.musicplatform.music.entity.Genre;
 import com.musicplatform.music.repository.ArtistRepository;
+import com.musicplatform.music.repository.GenreRepository;
 
 @Service
 public class SongServiceImpl implements SongService {
@@ -22,11 +24,14 @@ public class SongServiceImpl implements SongService {
 	private final AlbumRepository albumRepository;
 	private final SongRepository songRepository;
 	private final ArtistRepository artistRepository;
+	private final GenreRepository genreRepository;
 
-	public SongServiceImpl(SongRepository songRepository, ArtistRepository artistRepository, AlbumRepository albumRepository) {
+
+	public SongServiceImpl(SongRepository songRepository, ArtistRepository artistRepository, AlbumRepository albumRepository, GenreRepository genreRepository) {
 		this.songRepository = songRepository;
 		this.artistRepository = artistRepository;
 		this.albumRepository = albumRepository;
+	    this.genreRepository = genreRepository;
 	}
 
 	@Override
@@ -41,6 +46,12 @@ public class SongServiceImpl implements SongService {
 	    	                "Album not found: " + request.albumId()));
 	         song.setAlbum(album);
 
+	    }
+	    if (request.genreId() != null) {
+	        Genre genre = genreRepository.findById(request.genreId())
+	                .orElseThrow(() -> new ResourceNotFoundException(
+	                    "Genre not found: " + request.genreId()));
+	        song.setGenre(genre);
 	    }
 	    
 		return songRepository.save(song);
@@ -74,6 +85,16 @@ public class SongServiceImpl implements SongService {
 			                "Album not found: " + request.albumId()));
 			        existing.setAlbum(album);
 		  }
+		  
+
+		    if (request.genreId() == null) {
+		        existing.setGenre(null);
+		    } else {
+		        Genre genre = genreRepository.findById(request.genreId())
+		                .orElseThrow(() -> new ResourceNotFoundException(
+		                    "Genre not found: " + request.genreId()));
+		        existing.setGenre(genre);
+		    }
 
 		return songRepository.save(existing);
 	}
