@@ -1,0 +1,35 @@
+<section>
+    <h2>songs</h2>
+    @if (loading()) {
+        <p>Loading...</p>
+    }@else if (error()) {
+        <p class="error">{{error()}}</p>
+    }@else {
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Album</th>
+                    <th>genre</th>
+                    <th>Artists</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (song of songs(); track song.id) {
+                    <tr>
+                        <td>{{song.title}}</td>
+                        <td>{{song.albumName ?? '—' }}</td>
+                        <td>{{song.genreName ?? '—'}}</td>
+                        <td>
+                            @for (a of song.artists; track a.id) {
+                                <span>{{a.name}}</span>
+                                @if (!$last) {<span>, </span>}
+                            }
+                              @if (song.artists.length === 0) { <span>—</span> }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</section>
