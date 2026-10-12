@@ -1,10 +1,11 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { SongResponse } from '../../models/song.model';
 import { SongService } from '../../services/song.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-song-list',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './song-list.html',
   styleUrl: './song-list.css',
 })

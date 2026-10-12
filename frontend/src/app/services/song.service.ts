@@ -15,6 +15,10 @@ export class SongService{
       `${this.baseUrl}/songs?page=${page}&size=${size}`
     );
   }
+  
+  getSongById(id : number): Observable<SongResponse>{
+    return this.http.get<SongResponse>(`${this.baseUrl}/songs/${id}`);
+  }
 
   
 }

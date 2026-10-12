@@ -1,0 +1,23 @@
+section {
+  padding: 1rem;
+}
+
+dl {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 0.5rem 1rem;
+  max-width: 600px;
+  margin: 1rem 0;
+}
+
+dt {
+  font-weight: bold;
+}
+
+dd {
+  margin: 0;
+}
+
+.error {
+  color: #c00;
+}

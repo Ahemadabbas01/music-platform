@@ -1,0 +1,31 @@
+<section>
+    @if (loading()) {
+        <p>Loading..</p>
+    }@else if (error()) {
+        <p class="error">{{error()}}</p>
+    }@else if (song(); as s) {
+        <h2>{{ s.title }}</h2>
+
+        <dl>
+            <dt>Album</dt>
+            <dd>{{s.albumName ?? '—'}}</dd>
+            <dt>Genre</dt>
+            <dd>{{s.genreName ?? '—'}}</dd>
+            <dt>Artist</dt>
+            <dd>
+                @for (a of s.artists; track a.id) {
+                    <span>{{a.name}}</span>
+                    @if (!$last) {<span>, </span>}
+                }
+                  @if (s.artists.length === 0) { <span>—</span> }
+            </dd>
+            <dt>Audio</dt>
+            <dd>{{s.audioRef}}</dd>
+            <dt>CreatedAt</dt>
+            <dd>{{ s.createdAt | date:'medium' }}</dd>
+
+        </dl>
+         <a routerLink="/">← Back to songs</a>
+
+    }
+</section>
