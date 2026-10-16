@@ -1,56 +1,53 @@
 <section>
   <h2>Songs</h2>
-
+  <div class="search">
+    <input type="text" placeholder="Search songs…" [value]="inputValue()" (input)="onInput($event)" />
+  </div>
   @if (loading()) {
-    <p>Loading…</p>
+  <p>Loading…</p>
   } @else if (error()) {
-    <p class="error">{{ error() }}</p>
+  <p class="error">{{ error() }}</p>
   } @else {
-    <table>
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Album</th>
-          <th>Genre</th>
-          <th>Artists</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (song of songs(); track song.id) {
-          <tr>
-            <td><a [routerLink]="['/songs', song.id]">{{ song.title }}</a></td>
-            <td>{{ song.albumName ?? '—' }}</td>
-            <td>{{ song.genreName ?? '—' }}</td>
-            <td>
-              @for (a of song.artists; track a.id) {
-                <span>{{ a.name }}</span>
-                @if (!$last) { <span>, </span> }
-              }
-              @if (song.artists.length === 0) { <span>—</span> }
-            </td>
-          </tr>
-        }
-      </tbody>
-    </table>
 
-    @if (response(); as r) {
-      <div class="pagination">
-        <button
-          type="button"
-          [disabled]="r.first"
-          (click)="goToPage(pageParam() - 1)">
-          ← Previous
-        </button>
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Album</th>
+        <th>Genre</th>
+        <th>Artists</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (song of songs(); track song.id) {
+      <tr>
+        <td><a [routerLink]="['/songs', song.id]">{{ song.title }}</a></td>
+        <td>{{ song.albumName ?? '—' }}</td>
+        <td>{{ song.genreName ?? '—' }}</td>
+        <td>
+          @for (a of song.artists; track a.id) {
+          <span>{{ a.name }}</span>
+          @if (!$last) { <span>, </span> }
+          }
+          @if (song.artists.length === 0) { <span>—</span> }
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
 
-        <span>Page {{ r.page + 1 }} of {{ r.totalPages }}</span>
+  @if (response(); as r) {
+  <div class="pagination">
+    <button type="button" [disabled]="r.first" (click)="goToPage(pageNumber() - 1)">
+      ← Previous
+    </button>
 
-        <button
-          type="button"
-          [disabled]="r.last"
-          (click)="goToPage(pageParam() + 1)">
-          Next →
-        </button>
-      </div>
-    }
+    <span>Page {{ r.page + 1 }} of {{ r.totalPages }}</span>
+
+    <button type="button" [disabled]="r.last" (click)="goToPage(pageNumber() + 1)">
+      Next →
+    </button>
+  </div>
   }
-</section> 
+  }
+</section>

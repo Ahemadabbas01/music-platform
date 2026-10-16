@@ -19,8 +19,9 @@ export class SongList {
   private readonly pageSize = 3;
 
   readonly page = input<string>('0');
+  readonly q = input<string>('');
 
-  readonly pageParam = computed(() => {
+  readonly pageNumber = computed(() => {
     const raw = Number(this.page());
     return Number.isNaN(raw) || raw < 0 ? 0 : raw;
   });
@@ -30,12 +31,36 @@ export class SongList {
   readonly error = signal<string | null>(null);
 
   readonly songs = computed(() => this.response()?.content ?? []);
+  readonly qParam = computed(() => this.q() ?? '');
+
+  readonly inputValue = signal<string>('');
+
+  private debounceHandle: ReturnType<typeof setTimeout> | null = null;
 
   constructor() {
     effect(() => {
-      this.loadSongs(this.pageParam());
+      this.loadSongs(this.pageNumber(), this.q());
     });
+      effect(() => {
+    // Keep the input in sync when the URL changes externally
+    this.inputValue.set(this.qParam());
+  });
   }
+
+  onInput(event: Event): void {
+  const value = (event.target as HTMLInputElement).value;
+  this.inputValue.set(value);
+
+  if (this.debounceHandle) {
+    clearTimeout(this.debounceHandle);
+  }
+  this.debounceHandle = setTimeout(() => {
+    this.router.navigate([], {
+      queryParams: { q: value, page: 0 },
+      queryParamsHandling: 'merge'
+    });
+  }, 300);
+}
 
   goToPage(target: number): void {
     if (target < 0) return;
@@ -45,11 +70,11 @@ export class SongList {
     });
   }
 
-  private loadSongs(page: number): void {
+  private loadSongs(page: number, q: string): void {
     this.loading.set(true);
     this.error.set(null);
 
-    this.songService.getSongs(page, this.pageSize).subscribe({
+    this.songService.getSongs(page, this.pageSize,q).subscribe({
       next: (response) => {
         this.response.set(response);
         this.loading.set(false);
@@ -60,4 +85,4 @@ export class SongList {
       }
     });
   }
-}
+}  
