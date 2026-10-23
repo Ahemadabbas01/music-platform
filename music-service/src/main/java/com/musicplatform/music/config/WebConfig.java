@@ -14,6 +14,12 @@ public class WebConfig implements WebMvcConfigurer{
 		        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
 		        .allowedHeaders("*")
 		        .allowCredentials(false);
+		
+		registry.addMapping("/audio/**")
+		        .allowedOrigins("http://localhost:4200")
+		        .allowedMethods("GET", "HEAD", "OPTIONS")
+		        .allowedHeaders("*")
+		        .allowCredentials(false);
 	}
 
 }
