@@ -5,7 +5,13 @@
         <p class="error">{{error()}}</p>
     }@else if (song(); as s) {
         <h2>{{ s.title }}</h2>
-
+ <button
+    type="button"
+    class="detail-play-btn"
+    (click)="onPlayClick(s)"
+    [attr.aria-label]="currentPlayingId() === s.id ? 'Pause' : 'Play'">
+    {{ currentPlayingId() === s.id ? '⏸' : '▶' }}
+  </button>
         <dl>
             <dt>Album</dt>
             <dd>{{s.albumName ?? '—'}}</dd>

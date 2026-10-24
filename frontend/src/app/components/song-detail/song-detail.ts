@@ -52,5 +52,11 @@ export class SongDetail {
     });
   }
 
-  
+  onPlayClick(song: SongResponse): void {
+  if (this.player.currentSong()?.id === song.id) {
+    this.player.togglePlayPause();
+  } else {
+    this.player.play(song);
+  }
+}
 }

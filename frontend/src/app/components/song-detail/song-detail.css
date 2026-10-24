@@ -22,3 +22,19 @@ dd {
   color: #c00;
 }
 
+.detail-play-btn {
+  background: #1db954;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+
+.detail-play-btn:hover {
+  background: #1aa34a;
+}
