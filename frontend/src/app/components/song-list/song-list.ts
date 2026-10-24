@@ -4,6 +4,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { SongService } from '../../services/song.service';
 import { SongResponse } from '../../models/song.model';
 import { PageResponse } from '../../models/page-response.model';
+import { PlayerService } from '../../services/player.service';
 
 @Component({
   selector: 'app-song-list',
@@ -37,30 +38,32 @@ export class SongList {
 
   private debounceHandle: ReturnType<typeof setTimeout> | null = null;
 
+  private readonly player = inject(PlayerService);
+
   constructor() {
     effect(() => {
       this.loadSongs(this.pageNumber(), this.q());
     });
-      effect(() => {
-    // Keep the input in sync when the URL changes externally
-    this.inputValue.set(this.qParam());
-  });
+    effect(() => {
+      // Keep the input in sync when the URL changes externally
+      this.inputValue.set(this.qParam());
+    });
   }
 
   onInput(event: Event): void {
-  const value = (event.target as HTMLInputElement).value;
-  this.inputValue.set(value);
+    const value = (event.target as HTMLInputElement).value;
+    this.inputValue.set(value);
 
-  if (this.debounceHandle) {
-    clearTimeout(this.debounceHandle);
+    if (this.debounceHandle) {
+      clearTimeout(this.debounceHandle);
+    }
+    this.debounceHandle = setTimeout(() => {
+      this.router.navigate([], {
+        queryParams: { q: value, page: 0 },
+        queryParamsHandling: 'merge'
+      });
+    }, 300);
   }
-  this.debounceHandle = setTimeout(() => {
-    this.router.navigate([], {
-      queryParams: { q: value, page: 0 },
-      queryParamsHandling: 'merge'
-    });
-  }, 300);
-}
 
   goToPage(target: number): void {
     if (target < 0) return;
@@ -74,7 +77,7 @@ export class SongList {
     this.loading.set(true);
     this.error.set(null);
 
-    this.songService.getSongs(page, this.pageSize,q).subscribe({
+    this.songService.getSongs(page, this.pageSize, q).subscribe({
       next: (response) => {
         this.response.set(response);
         this.loading.set(false);
@@ -85,4 +88,17 @@ export class SongList {
       }
     });
   }
+
+  readonly currentPlayingId = computed(() =>
+    this.player.isPlaying() ? this.player.currentSong()?.id ?? null : null
+  );
+
+  onPlayClick(song: SongResponse): void {
+    if (this.player.currentSong()?.id === song.id) {
+      this.player.togglePlayPause();
+    } else {
+      this.player.play(song);
+    }
+  }
+
 }  

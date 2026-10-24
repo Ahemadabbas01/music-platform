@@ -1,0 +1,84 @@
+.player-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #1e1e1e;
+  color: #eee;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.4);
+  z-index: 100;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.info {
+  min-width: 180px;
+  max-width: 280px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.info .title {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.info .title:hover {
+  text-decoration: underline;
+}
+
+.info .artists {
+  color: #aaa;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.play-btn {
+  background: #fff;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1rem;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.play-btn:hover {
+  background: #e0e0e0;
+}
+
+.progress {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.progress .time {
+  color: #aaa;
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+  min-width: 40px;
+  text-align: center;
+}
+
+.progress input[type="range"] {
+  flex: 1;
+  accent-color: #1db954;
+  cursor: pointer;
+}
+
+.error {
+  color: #ff6b6b;
+}

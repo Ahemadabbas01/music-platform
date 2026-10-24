@@ -43,3 +43,25 @@ th, td {
   width: 300px;
   max-width: 100%;
 }
+.play-cell {
+  width: 40px;
+  padding: 0.25rem;
+}
+
+.row-play-btn {
+  background: none;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.row-play-btn:hover {
+  background: #f0f0f0;
+}

@@ -21,6 +21,15 @@
     <tbody>
       @for (song of songs(); track song.id) {
       <tr>
+        <td class="play-cell">
+          <button
+            type="button"
+            class="row-play-btn"
+            (click)="onPlayClick(song)"
+            [attr.aria-label]="currentPlayingId() === song.id ? 'Pause' : 'Play'">
+            {{ currentPlayingId() === song.id ? '⏸' : '▶' }}
+          </button>
+        </td>
         <td><a [routerLink]="['/songs', song.id]">{{ song.title }}</a></td>
         <td>{{ song.albumName ?? '—' }}</td>
         <td>{{ song.genreName ?? '—' }}</td>

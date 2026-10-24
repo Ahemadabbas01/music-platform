@@ -1,9 +1,10 @@
-import { Component, effect, inject, input, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SongService } from '../../services/song.service';
 import { SongResponse } from '../../models/song.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
+import { PlayerService } from '../../services/player.service';
 
 @Component({
   selector: 'app-song-detail',
@@ -15,11 +16,15 @@ import { DatePipe } from '@angular/common';
 export class SongDetail {
 
   private readonly songService = inject(SongService);
+  private readonly player = inject(PlayerService);
+
   readonly id = input.required<string>();
 
   readonly song = signal<SongResponse | null>(null);
   readonly loading = signal(false);
   readonly error = signal<string | null>(null);
+
+  readonly currentPlayingId = computed(() => this.player.isPlaying() ? this.player.currentSong()?.id ?? null : null );
 
   constructor() {
     effect(() => {
@@ -46,4 +51,6 @@ export class SongDetail {
       }
     });
   }
+
+  
 }
