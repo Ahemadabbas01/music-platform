@@ -32,7 +32,7 @@ export class SongList {
   readonly error = signal<string | null>(null);
 
   readonly songs = computed(() => this.response()?.content ?? []);
-  readonly qParam = computed(() => this.q() ?? '');
+ // readonly qParam = computed(() => this.q() ?? '');
 
   readonly inputValue = signal<string>('');
 
@@ -46,7 +46,7 @@ export class SongList {
     });
     effect(() => {
       // Keep the input in sync when the URL changes externally
-      this.inputValue.set(this.qParam());
+      this.inputValue.set(this.q());
     });
   }
 
