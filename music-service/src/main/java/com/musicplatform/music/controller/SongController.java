@@ -70,9 +70,11 @@ public class SongController {
 	    @ApiResponse(responseCode = "200", description = "Page of songs returned")
 	})
 	@GetMapping
-	public PageResponse<SongResponse> getAll(@Parameter(description = "Optional search query; matches title, artist name, or album name (case-insensitive)")@RequestParam(required = false) String q, Pageable pageable) {
+	public PageResponse<SongResponse> getAll(@Parameter(description = "Optional search query; matches title, artist name, or album name (case-insensitive)")@RequestParam(required = false) String q,
+			@Parameter(description = "Optional filter: only songs credited to this artist")@RequestParam(required = false) Long artistId,@Parameter(description = "Optional filter: only songs on this album")@RequestParam(required = false)Long albumId,
+			Pageable pageable) {
 		
-		Page<Song> page = songService.search(q,pageable);
+		Page<Song> page = songService.search(q,artistId,albumId,pageable);
 
 		List<SongResponse> content = page.getContent().stream().map(SongMapper::toResponse).toList();
 

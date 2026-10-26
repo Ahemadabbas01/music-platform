@@ -63,11 +63,15 @@ public class SongServiceImpl implements SongService {
 	}
 
 	@Override
-	public Page<Song> search(String q,Pageable pageable) {
-		if(q == null || q.isBlank()) {
-			return songRepository.findAll(pageable);
-		}
-	    return songRepository.searchByTitleOrArtistOrAlbum(q.trim(), pageable);
+	public Page<Song> search(String q,Long artistId,Long albumId,Pageable pageable) {
+	    boolean noFilters = (q == null || q.isBlank()) && artistId == null && albumId == null;
+	    if (noFilters) {
+	        return songRepository.findAll(pageable);
+	    }
+
+	    String normalizedQ = (q == null || q.isBlank()) ? null : q.trim();
+	    return songRepository.search(normalizedQ, artistId, albumId, pageable);
+
 	}
 
 	@Override
