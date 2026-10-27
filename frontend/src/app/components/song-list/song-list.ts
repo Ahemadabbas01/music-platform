@@ -46,7 +46,7 @@ export class SongList {
     });
     effect(() => {
       // Keep the input in sync when the URL changes externally
-      this.inputValue.set(this.q());
+      this.inputValue.set(this.q() ?? '');
     });
   }
 

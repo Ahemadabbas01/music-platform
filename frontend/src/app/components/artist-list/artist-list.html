@@ -1,0 +1,48 @@
+<section>
+    <h2>Artists</h2>
+    <div class="search">
+        <input type="text" placeholder="Search Artists…" [value]="inputValue()" (input)="onInput($event)" />
+    </div>
+    @if (loading()) {
+    <p>Loading…</p>
+    }@else if (error()) {
+    <p class="error">{{ error() }}</p>
+    }
+    @else {
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Country</th>
+                <th>Details</th>
+                <th>Created</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (artist of artists(); track artist.id) {
+            <tr>
+                <td><a [routerLink]="['/artists', artist.id]">{{ artist.name }}</a></td>
+                <td>{{ artist.country ?? '—' }}</td>
+                <td>{{ artist.details ?? '—' }}</td>
+                <td>{{ artist.createdAt | date:'mediumDate' }}</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+    @if (response(); as r) {
+    <div class="pagination">
+        <button type="button" [disabled]="r.first" (click)="goToPage(pageNumber() - 1)">
+            ← Previous
+        </button>
+
+        <span>Page {{ r.page + 1 }} of {{ r.totalPages }}</span>
+
+        <button type="button" [disabled]="r.last" (click)="goToPage(pageNumber() + 1)">
+            Next →
+        </button>
+    </div>
+    }
+
+    }
+</section>
