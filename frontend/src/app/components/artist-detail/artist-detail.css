@@ -1,0 +1,73 @@
+section {
+  padding: 1rem;
+  max-width: 1000px;
+}
+
+h2 {
+  margin-top: 0;
+}
+
+dl {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 0.5rem 1rem;
+  max-width: 500px;
+  margin: 1rem 0;
+}
+
+dt {
+  font-weight: bold;
+}
+
+dd {
+  margin: 0;
+}
+
+h3 {
+  margin-top: 2rem;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.5rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+th, td {
+  text-align: left;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #ddd;
+}
+
+tbody tr:hover {
+  background: #f8f8f8;
+}
+
+.play-cell {
+  width: 40px;
+  padding: 0.25rem;
+}
+
+.row-play-btn {
+  background: none;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.row-play-btn:hover {
+  background: #f0f0f0;
+}
+
+.error {
+  color: #c00;
+}

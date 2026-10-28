@@ -10,19 +10,25 @@ export class SongService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = 'http://localhost:8080/api';
 
-getSongs(page: number = 0, size: number = 20, q?: string): Observable<PageResponse<SongResponse>> {
-  const params: Record<string, string> = {
-    page: String(page),
-    size: String(size)
-  };
-  if (q && q.trim().length > 0) {
-    params['q'] = q.trim();
+  getSongs(page: number = 0, size: number = 20, q?: string, artistId?: number, albumId?: number): Observable<PageResponse<SongResponse>> {
+    const params: Record<string, string> = {
+      page: String(page),
+      size: String(size)
+    };
+    if (q && q.trim().length > 0) {
+      params['q'] = q.trim();
+    }
+    if (artistId !== undefined && artistId !== null) {
+      params['artistId'] = String(artistId);
+    }
+    if (albumId !== undefined && albumId !== null) {
+      params['albumId'] = String(albumId);
+    }
+    return this.http.get<PageResponse<SongResponse>>(
+      `${this.baseUrl}/songs`,
+      { params }
+    );
   }
-  return this.http.get<PageResponse<SongResponse>>(
-    `${this.baseUrl}/songs`,
-    { params }
-  );
-}
 
   getSongById(id: number): Observable<SongResponse> {
     return this.http.get<SongResponse>(`${this.baseUrl}/songs/${id}`);
