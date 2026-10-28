@@ -1,0 +1,50 @@
+section {
+  padding: 1rem;
+}
+
+.search {
+  margin-bottom: 1rem;
+}
+
+.search input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  width: 300px;
+  max-width: 100%;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  text-align: left;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #ddd;
+}
+
+tbody tr:hover {
+  background: #f8f8f8;
+}
+
+.error {
+  color: #c00;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.pagination button {
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

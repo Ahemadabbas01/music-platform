@@ -1,0 +1,48 @@
+<section>
+    <h2>Albums</h2>
+    <div class="search">
+        <input type="text" placeholder="Search Albums…" [value]="inputValue()" (input)="onInput($event)" />
+    </div>
+    @if (loading()) {
+    <p>Loading…</p>
+    }@else if (error()) {
+    <p class="error">{{ error() }}</p>
+    }
+    @else {
+    <table>
+        <thead>
+            <tr>
+                <th>Album Name</th>
+                <th>Artist Name</th>
+                <th>Image</th>
+                <th>Created</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (album of albums(); track album.id) {
+            <tr>
+                <td><a [routerLink]="['/albums', album.id]">{{ album.name }}</a></td>
+                <td>{{ album.artistName }}</td>
+                <td>{{ album.coverImageRef ?? '—' }}</td>
+                <td>{{ album.createdAt | date:'mediumDate' }}</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+    @if (response(); as r) {
+    <div class="pagination">
+        <button type="button" [disabled]="r.first" (click)="goToPage(pageNumber() - 1)">
+            ← Previous
+        </button>
+
+        <span>Page {{ r.page + 1 }} of {{ r.totalPages }}</span>
+
+        <button type="button" [disabled]="r.last" (click)="goToPage(pageNumber() + 1)">
+            Next →
+        </button>
+    </div>
+    }
+
+    }
+</section>
