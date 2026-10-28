@@ -10,19 +10,23 @@ export class ArtistService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = 'http://localhost:8080/api';
 
-  getArtists(page: number = 0, size: number = 20, q?: string): Observable<PageResponse<ArtistResponse>> {
-    const params: Record<string, string> = {
-      page: String(page),
-      size: String(size)
-    };
-    if (q && q.trim().length > 0) {
-      params['q'] = q.trim();
-    }
-    return this.http.get<PageResponse<ArtistResponse>>(
-      `${this.baseUrl}/artists`,
-      { params }
-    );
+ getArtists(opts: {
+  page?: number;
+  size?: number;
+  q?: string;
+} = {}): Observable<PageResponse<ArtistResponse>> {
+  const params: Record<string, string> = {
+    page: String(opts.page ?? 0),
+    size: String(opts.size ?? 20)
+  };
+  if (opts.q && opts.q.trim().length > 0) {
+    params['q'] = opts.q.trim();
   }
+  return this.http.get<PageResponse<ArtistResponse>>(
+    `${this.baseUrl}/artists`,
+    { params }
+  );
+}
 
   getArtistById(id: number): Observable<ArtistResponse> {
     return this.http.get<ArtistResponse>(`${this.baseUrl}/artists/${id}`);

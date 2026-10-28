@@ -72,7 +72,7 @@ export class ArtistList {
     this.loading.set(true);
     this.error.set(null);
 
-    this.artistService.getArtists(page, this.pageSize, q).subscribe({
+     this.artistService.getArtists({ page, size: this.pageSize, q }).subscribe({
       next: (response) => {
         this.response.set(response);
         this.loading.set(false);

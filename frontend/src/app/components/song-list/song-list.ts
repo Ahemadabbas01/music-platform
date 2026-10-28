@@ -77,7 +77,7 @@ export class SongList {
     this.loading.set(true);
     this.error.set(null);
 
-    this.songService.getSongs(page, this.pageSize, q).subscribe({
+    this.songService.getSongs({ page, size: this.pageSize, q }).subscribe({
       next: (response) => {
         this.response.set(response);
         this.loading.set(false);

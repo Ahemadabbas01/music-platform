@@ -55,7 +55,7 @@ export class ArtistDetail {
       }
     });
 
-    this.songService.getSongs(0, 20, undefined, id).subscribe({
+     this.songService.getSongs({ artistId: id }).subscribe({
       next: (response) => {
         this.songs.set(response.content);
         this.loading.set(false);
