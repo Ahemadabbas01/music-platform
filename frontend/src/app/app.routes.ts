@@ -4,6 +4,7 @@ import { SongDetail } from './components/song-detail/song-detail';
 import { ArtistList } from './components/artist-list/artist-list';
 import { ArtistDetail } from './components/artist-detail/artist-detail';
 import { AlbumList } from './components/album-list/album-list';
+import { AlbumDetail } from './components/album-detail/album-detail';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/songs', pathMatch: 'full' },
@@ -11,6 +12,7 @@ export const routes: Routes = [
     { path : 'songs/:id',component : SongDetail},
     { path: 'artists', component: ArtistList },
     { path: 'artists/:id', component: ArtistDetail },
-    { path: 'albums', component: AlbumList }
+    { path: 'albums', component: AlbumList },
+    { path: 'albums/:id', component: AlbumDetail }
 
 ];

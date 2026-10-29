@@ -1,0 +1,48 @@
+<section>
+    @if (loading() && !album()) {
+    <p>Loading...</p>
+    }@else if (error() && !album()) {
+    <p class="error">{{ error() }}</p>
+    }@else if (album(); as a) {
+         <h2>{{ a.name }}</h2>
+    <dl>
+        <dt>Artist</dt>
+        <dd>{{ a.artistName }}</dd>
+        <dt>Cover</dt>
+        <dd>{{ a.coverImageRef ?? '—' }}</dd>
+        <dt>Created</dt>
+        <dd>{{ a.createdAt | date:'medium' }}</dd>
+    </dl>
+
+    <h3>Songs</h3>
+    @if (songs().length === 0 && !loading()) {
+    <p>No songs on this album yet.</p>
+    }@else {
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <th>Title</th>
+                <th>Genre</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (song of songs(); track song.id) {
+            <tr>
+                <td class="play-cell">
+                    <button type="button" class="row-play-btn" (click)="onPlayClick(song)"
+                        [attr.aria-label]="currentPlayingId() === song.id ? 'Pause' : 'Play'">
+                        {{ currentPlayingId() === song.id ? '⏸' : '▶' }}
+                    </button>
+                </td>
+                <td><a [routerLink]="['/songs', song.id]">{{ song.title }}</a></td>
+                <td>{{ song.genreName ?? '—' }}</td>
+
+            </tr>
+            }
+        </tbody>
+    </table>
+    }
+    <a routerLink="/albums">← Back to albums</a>
+    }
+</section>
