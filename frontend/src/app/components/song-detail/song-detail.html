@@ -14,13 +14,18 @@
   </button>
         <dl>
             <dt>Album</dt>
-            <dd>{{s.albumName ?? '—'}}</dd>
+            <dd>@if (s.albumId) {
+                <a [routerLink]="['/albums', s.albumId]">{{ s.albumName }}</a>
+                }@else {
+                —
+                }
+            </dd>
             <dt>Genre</dt>
             <dd>{{s.genreName ?? '—'}}</dd>
             <dt>Artist</dt>
             <dd>
                 @for (a of s.artists; track a.id) {
-                    <span>{{a.name}}</span>
+                <a [routerLink]="['/artists', a.id]">{{ a.name }}</a>
                     @if (!$last) {<span>, </span>}
                 }
                   @if (s.artists.length === 0) { <span>—</span> }

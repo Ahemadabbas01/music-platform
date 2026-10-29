@@ -7,7 +7,7 @@
          <h2>{{ a.name }}</h2>
     <dl>
         <dt>Artist</dt>
-        <dd>{{ a.artistName }}</dd>
+        <dd><a [routerLink]="['/artists', a.artistId]">{{ a.artistName }}</a></dd>
         <dt>Cover</dt>
         <dd>{{ a.coverImageRef ?? '—' }}</dd>
         <dt>Created</dt>

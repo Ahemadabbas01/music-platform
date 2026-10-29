@@ -31,6 +31,7 @@
     </table>
 
     @if (response(); as r) {
+    @if (r.totalElements > 0) {
     <div class="pagination">
         <button type="button" [disabled]="r.first" (click)="goToPage(pageNumber() - 1)">
             ← Previous
@@ -43,6 +44,6 @@
         </button>
     </div>
     }
-
+    }
     }
 </section>
