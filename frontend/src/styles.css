@@ -1,9 +1,91 @@
-/* You can add global styles to this file, and also import other style files */
-body {
+/* ============================================================
+   Design system — global tokens + base reset
+   ============================================================ */
+
+:root {
+  /* Colors */
+  --color-bg: #121212;
+  --color-surface: #181818;
+  --color-surface-raised: #1e1e1e;
+  --color-surface-hover: #282828;
+  --color-border: #282828;
+
+  --color-text: #ffffff;
+  --color-text-muted: #b3b3b3;
+  --color-text-subtle: #7a7a7a;
+
+  --color-primary: #1db954;
+  --color-primary-hover: #1ed760;
+  --color-error: #f15e6c;
+
+  /* Typography */
+  --font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --text-xs: 0.75rem;   /* 12px */
+  --text-sm: 0.875rem;  /* 14px */
+  --text-base: 1rem;    /* 16px */
+  --text-lg: 1.25rem;   /* 20px */
+  --text-xl: 1.5rem;    /* 24px */
+  --text-2xl: 2rem;     /* 32px */
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-8: 3rem;
+
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* Layout */
+  --content-max-width: 1200px;
+  --header-height: 56px;
+  --player-bar-height: 80px;
+}
+
+/* Base reset */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
   margin: 0;
-  font-family: system-ui, -apple-system, sans-serif;
+  padding: 0;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-family);
+  font-size: var(--text-base);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body:has(app-player-bar .player-bar) {
-  padding-bottom: 90px;
+  padding-bottom: var(--player-bar-height);
+}
+
+a {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+input {
+  font-family: inherit;
 }
