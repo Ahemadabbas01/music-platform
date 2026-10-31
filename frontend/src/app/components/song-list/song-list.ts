@@ -97,7 +97,7 @@ export class SongList {
     if (this.player.currentSong()?.id === song.id) {
       this.player.togglePlayPause();
     } else {
-      this.player.play(song);
+      this.player.play(song, this.songs()); // <-- Pass the current page of songs
     }
   }
 

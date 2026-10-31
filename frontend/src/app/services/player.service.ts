@@ -11,6 +11,8 @@ export class PlayerService {
   readonly currentTime = signal(0);
   readonly duration = signal(0);
   readonly error = signal<string | null>(null);
+  readonly queue = signal<SongResponse[]>([]);
+  readonly queueIndex = signal<number>(-1);
 
   constructor() {
     this.audio.addEventListener('timeupdate', () => {
@@ -22,7 +24,12 @@ export class PlayerService {
     });
 
     this.audio.addEventListener('ended', () => {
-      this.isPlaying.set(false);
+      // Auto-play the next song if there is one
+      if (this.queueIndex() + 1 < this.queue().length) {
+        this.next();
+      } else {
+        this.isPlaying.set(false);
+      }
     });
 
     this.audio.addEventListener('error', () => {
@@ -31,26 +38,37 @@ export class PlayerService {
     });
   }
 
-  play(song: SongResponse): void {
-    // Same song already loaded — just resume (or restart if you prefer)
-    if (this.currentSong()?.id === song.id && this.audio.src) {
-      this.audio.currentTime = 0;
-    } else {
-      this.currentSong.set(song);
-      this.audio.src = song.audioRef;
-      this.currentTime.set(0);
-      this.duration.set(0);
-    }
-
-    this.error.set(null);
-    this.audio.play()
-      .then(() => this.isPlaying.set(true))
-      .catch(err => {
-        console.error(err);
-        this.error.set('Playback failed');
-        this.isPlaying.set(false);
-      });
+play(song: SongResponse, newQueue?: SongResponse[]): void {
+  // 1. Update the queue if a new one is provided
+  if (newQueue) {
+    this.queue.set(newQueue);
   }
+
+  // 2. ALWAYS find the song's index in the queue and update queueIndex
+  const index = this.queue().findIndex(s => s.id === song.id);
+  if (index !== -1) {
+    this.queueIndex.set(index);
+  }
+
+  // 3. Same song already loaded — just resume (or restart)
+  if (this.currentSong()?.id === song.id && this.audio.src) {
+    this.audio.currentTime = 0;
+  } else {
+    this.currentSong.set(song);
+    this.audio.src = song.audioRef;
+    this.currentTime.set(0);
+    this.duration.set(0);
+  }
+
+  this.error.set(null);
+  this.audio.play()
+    .then(() => this.isPlaying.set(true))
+    .catch(err => {
+      console.error(err);
+      this.error.set('Playback failed');
+      this.isPlaying.set(false);
+    });
+}
 
   togglePlayPause(): void {
     if (!this.currentSong()) return;
@@ -77,5 +95,19 @@ export class PlayerService {
   setVolume(v: number): void {
     const clamped = Math.max(0, Math.min(1, v));
     this.audio.volume = clamped;
+  }
+
+  next(): void {
+    const nextIndex = this.queueIndex() + 1;
+    if (nextIndex < this.queue().length) {
+      this.play(this.queue()[nextIndex]);
+    }
+  }
+
+  previous(): void {
+    const prevIndex = this.queueIndex() - 1;
+    if (prevIndex >= 0) {
+      this.play(this.queue()[prevIndex]);
+    }
   }
 }

@@ -14,13 +14,31 @@
       }
     </div>
 
-    <button
-      type="button"
-      class="play-btn"
-      (click)="player.togglePlayPause()"
-      [attr.aria-label]="player.isPlaying() ? 'Pause' : 'Play'">
-      {{ player.isPlaying() ? '⏸' : '▶' }}
-    </button>
+ <div class="controls">
+  <button 
+    type="button" 
+    class="skip-btn" 
+    (click)="player.previous()" 
+    [disabled]="player.queueIndex() <= 0">
+    ⏮
+  </button>
+    
+  <button
+    type="button"
+    class="play-btn"
+    (click)="player.togglePlayPause()"
+    [attr.aria-label]="player.isPlaying() ? 'Pause' : 'Play'">
+    {{ player.isPlaying() ? '⏸' : '▶' }}
+  </button>
+    
+  <button 
+    type="button" 
+    class="skip-btn" 
+    (click)="player.next()" 
+    [disabled]="player.queueIndex() >= player.queue().length - 1">
+    ⏭
+  </button>
+</div>
 
     <div class="progress">
       <span class="time">{{ formatTime(player.currentTime()) }}</span>
