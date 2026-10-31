@@ -9,6 +9,7 @@
     <p class="error">{{ error() }}</p>
     }
     @else {
+<div class="table-wrapper">
     <table>
         <thead>
             <tr>
@@ -29,7 +30,7 @@
             }
         </tbody>
     </table>
-
+</div>
     @if (response(); as r) {
     @if (r.totalElements > 0) {
     <div class="pagination">

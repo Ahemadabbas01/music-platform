@@ -146,3 +146,20 @@ tbody a:hover {
   color: var(--color-text);
   text-decoration: underline;
 }
+
+@media (max-width: 600px) {
+  dl {
+    grid-template-columns: 1fr;
+    gap: var(--space-1);
+    padding: var(--space-4);
+  }
+  
+  dt {
+    margin-top: var(--space-3);
+  }
+  
+  /* Remove top margin for the very first item */
+  dt:first-of-type {
+    margin-top: 0;
+  }
+}

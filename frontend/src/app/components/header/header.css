@@ -43,3 +43,16 @@ nav a.active {
   color: var(--color-text);
   background: var(--color-surface-hover);
 }
+
+@media (max-width: 600px) {
+  .site-header {
+    flex-direction: column;
+    height: auto;
+    padding: var(--space-3);
+    gap: var(--space-3);
+  }
+  
+  .brand {
+    font-size: var(--text-base);
+  }
+}
